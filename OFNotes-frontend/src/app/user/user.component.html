@@ -1,0 +1,9 @@
+<div class="w3-container w3-red" style="margin-left:20%; height: 80%" *ngIf="user">
+  <h1>User details</h1>
+  <span><b>created</b> {{user.created}} <b>modified</b> {{user.modified}}</span>
+  <br>
+  <span>Login:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input [(ngModel)]="user.login"></span>
+  <br>
+  <span>Password:<input type="password" [(ngModel)]="user.password"></span>
+  <button class="w3-button" (click)="updateUser()">Save</button>
+</div>

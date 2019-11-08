@@ -1,0 +1,14 @@
+<div class="w3-sidebar w3-bar-block w3-card w3-purple" style="width:20%; height: 80%">
+  <div class="w3-bar-item" style="width:90%">
+    <h1>Users list</h1>
+  </div>
+  <div class="w3-bar-item" style="width:90%">
+    <span>Login: <input [(ngModel)]="newUser.login"></span>
+    <button class="w3-button" (click)="createUser()">Create</button>
+  </div>
+  <div class="w3-bar-item" style="width:90%" *ngFor="let user of users">
+    <a class="w3-button" (click)="selectUser(user)">{{user.login}}</a>
+    <a class="w3-button w3-red w3-right" (click)="removeUser(user)">X</a>
+  </div>
+</div>
+<app-user [user]="user"></app-user>

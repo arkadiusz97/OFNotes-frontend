@@ -1,0 +1,9 @@
+<div class="w3-container w3-red" style="margin-left:20%; height: 80%" *ngIf="note">
+  <h1>Note content</h1>
+  <span><b>created</b> {{note.created}} <b>modified</b> {{note.modified}}</span>
+  <br>
+  <textarea [(ngModel)]="note.note" style="width:100%;"></textarea>
+  <br>
+  <input [(ngModel)]="note.name">
+  <button class="w3-button" (click)="updateNote()">Save</button>
+</div>

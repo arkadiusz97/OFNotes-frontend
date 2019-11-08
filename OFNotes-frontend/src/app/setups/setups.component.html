@@ -1,0 +1,15 @@
+<div class="w3-container w3-light-blue">
+  <h1>Setups</h1>
+  <div *ngIf="userr.id===1 else elseBlock">
+    <div *ngFor="let setup of setups">
+      <span>{{setup.name}}: </span>
+      <span><input [(ngModel)]="setup.value"></span>
+      <button class="w3-button" (click)="updateSetups(setup)">Save</button>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <div *ngFor="let setup of setups">
+      <span>{{setup.name}}: {{setup.value}}</span>
+    </div>
+  </ng-template>
+</div>
