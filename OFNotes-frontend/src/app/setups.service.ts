@@ -28,7 +28,7 @@ export class SetupsService {
     "Authorization": "Basic " + btoa(this.usersService.login + ":" + this.usersService.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.put<Setup>("http://localhost:8080/setups", setup.name + "=" + setup.value
+    return this.http.put<Setup>("http://localhost:8080/setups", encodeURIComponent(setup.name) + "=" + encodeURIComponent(setup.value)
     , {headers: headers}).pipe(
                tap(_ => this.statusService.setStatusString("Setup updated")),
                catchError(this.handleError<Setup[]>("Setup update failed"))

@@ -21,7 +21,8 @@ export class UsersService {
     "Authorization": "Basic " + btoa(this.login + ":" + this.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.post<User[]>("http://localhost:8080/user", "login=" + user.login + "&password=" + user.password,
+    return this.http.post<User[]>("http://localhost:8080/user",
+    "login=" + encodeURIComponent(user.login) + "&password=" + encodeURIComponent(user.password),
      {headers: headers}).pipe(
      tap(_ => this.statusService.setStatusString("User created")),
      catchError(this.handleError<User[]>("User creating failed"))
@@ -51,11 +52,12 @@ export class UsersService {
     "Authorization": "Basic " + btoa(this.login + ":" + this.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.put<User>("http://localhost:8080/user/" + user.id,
-    "login=" + user.login + "&password=" + user.password, {headers: headers}).pipe(
-               tap(_ => this.statusService.setStatusString("User updated")),
-               catchError(this.handleError<User[]>("User update failed"))
-             );
+    return this.http.put<User>("http://localhost:8080/user/" + encodeURIComponent(user.id),
+    "login=" + encodeURIComponent(user.login) + "&password=" +
+    encodeURIComponent(user.password), {headers: headers}).pipe(
+      tap(_ => this.statusService.setStatusString("User updated")),
+      catchError(this.handleError<User[]>("User update failed"))
+    );
   }
   removeUser(user)
   {
