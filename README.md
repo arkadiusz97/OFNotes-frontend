@@ -5,7 +5,7 @@ Program is also using [w3.css](https://www.w3schools.com/w3css/).
 OFNotes allows register account and manage notes.
 
 # Requirements.
-To build this program, you need a installed Angular environment. You can build and run application fast using command: [ng serve](https://angular.io/cli/serve)
+To build this program, you need a installed Angular environment. You can build and run application to test using command: [ng serve](https://angular.io/cli/serve) Build for production: [ng build --prod](https://angular.io/cli/build)
 To run this program, you need a installed [backend](https://github.com/arkadiusz97/OFNotes)
 
 # Screenshots.
