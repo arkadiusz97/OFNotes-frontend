@@ -21,7 +21,7 @@ export class NotesService {
     "Authorization": "Basic " + btoa(this.usersService.login + ":" + this.usersService.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.post<Note[]>("http://localhost:8080/note", "name=" + encodeURIComponent(note.name), {headers: headers}).pipe(
+    return this.http.post<Note[]>("http://localhost:8080/note", "name=" + encodeURIComponent(note.name) + "&note=", {headers: headers}).pipe(
                tap(_ => this.statusService.setStatusString("Note created")),
                catchError(this.handleError<Note[]>("Notes creating failed"))
              );
