@@ -1,4 +1,4 @@
-<div class="w3-sidebar w3-bar-block w3-card w3-green" style="width:20%; height: 80%">
+<div class="w3-sidebar w3-bar-block w3-card w3-light-grey" style="width:20%; height: 80%">
   <div class="w3-bar-item" style="width:90%">
     <h1>Notes list</h1>
   </div>
@@ -8,7 +8,7 @@
   </div>
   <div class="w3-bar-item" style="width:90%" *ngFor="let note of notes">
     <a class="w3-button" (click)="selectNote(note)">{{note.name}}</a>
-    <a class="w3-button w3-red w3-right" (click)="removeNote(note)">X</a>
+    <a class="w3-button w3-khaki w3-right" (click)="removeNote(note)">X</a>
   </div>
 </div>
 <app-note [note]="note"></app-note>

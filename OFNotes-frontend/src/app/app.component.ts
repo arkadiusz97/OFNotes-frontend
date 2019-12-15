@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  version = "1.0";
+  version = "2.0";
   title = 'OFNotes' + this.version;
 }

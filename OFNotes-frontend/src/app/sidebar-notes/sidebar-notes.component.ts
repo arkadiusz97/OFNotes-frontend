@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd  } from '@angular/router';
 import { NotesService } from '../notes.service';
 import { StatusService } from '../status.service';
+import { GlobalVariablesService } from '../global-variables.service';
 import { Note } from '../note';
 
 @Component({
@@ -14,8 +16,28 @@ export class SidebarNotesComponent implements OnInit {
     note: Note;
     newNote: Note = new Note();
     status;
+    subscribeData;
+    mySubscription;
     constructor(private notesService: NotesService,
-    private statusService: StatusService) { }
+    private statusService: StatusService,
+    public globalVariablesService: GlobalVariablesService,
+    private router: Router) {
+      this.mySubscription = this.router.events.subscribe((e: any) => {
+        if(e instanceof NavigationEnd) {
+          this.router.navigated = false;
+          if(this.globalVariablesService.searchString.length == 0) {
+            this.getNotes();
+          }
+          else {
+            this.notesService.searchNotes(this.globalVariablesService.searchString).
+            subscribe(result => {
+              this.notes = result;
+              this.globalVariablesService.searchString = "";
+            });
+          }
+        }
+      });
+    }
     createNote() {
       if(!this.newNote.name) {
         this.statusService.setStatusString("Empty note name.");
@@ -45,6 +67,11 @@ export class SidebarNotesComponent implements OnInit {
       _ => this.statusService.setStatusString("Notes remove failed"));
     }
     ngOnInit() {
-      this.getNotes();
+
+    }
+    ngOnDestroy() {
+      if(this.mySubscription) {
+        this.mySubscription.unsubscribe();
+      }
     }
 }

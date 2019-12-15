@@ -12,10 +12,11 @@ import { SidebarNotesComponent } from './sidebar-notes/sidebar-notes.component';
 import { UserComponent } from './user/user.component';
 import { SetupsComponent } from './setups/setups.component';
 import { UsersService } from './users.service';
-
+import { GlobalVariablesService } from './global-variables.service';
 import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
-  { path: 'notes', component: SidebarNotesComponent },
+  { path: 'notes', component: SidebarNotesComponent,
+   runGuardsAndResolvers: 'always' },
   { path: 'users', component: SidebarUsersComponent },
   { path: 'account', component: UserComponent },
   { path: 'setups', component: SetupsComponent }
@@ -37,7 +38,8 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      { enableTracing: false,
+      onSameUrlNavigation: 'reload' }
     )
   ],
   providers: [UsersService],

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { UsersService } from '../users.service';
+import { GlobalVariablesService } from '../global-variables.service';
 import { User } from '../user';
 import { StatusService } from '../status.service';
 
@@ -13,8 +15,27 @@ export class SidebarUsersComponent implements OnInit {
   users: User[];
   user: User;
   newUser: User = new User();
+  mySubscription;
   constructor(private usersService: UsersService,
-  private statusService: StatusService) { }
+  private statusService: StatusService,
+  public globalVariablesService: GlobalVariablesService,
+  private router: Router) {
+    this.mySubscription = this.router.events.subscribe((e: any) => {
+      if(e instanceof NavigationEnd) {
+        this.router.navigated = false;
+        if(this.globalVariablesService.searchString.length == 0) {
+          this.getUsers();
+        }
+        else {
+          this.usersService.searchUsers(this.globalVariablesService.searchString).
+          subscribe(result => {
+            this.users = result;
+            this.globalVariablesService.searchString = "";
+          });
+        }
+      }
+    });
+  }
   createUser() {
     if(!this.newUser.login) {
       this.statusService.setStatusString("Empty login.");
@@ -45,6 +66,11 @@ export class SidebarUsersComponent implements OnInit {
     _ => this.statusService.setStatusString("Users remove failed"));
   }
   ngOnInit() {
-    this.getUsers();
+
+  }
+  ngOnDestroy() {
+    if(this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
   }
 }

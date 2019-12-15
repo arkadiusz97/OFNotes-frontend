@@ -1,4 +1,4 @@
-<div class="w3-yellow w3-container" style="height: 20%;">
+<div class="w3-pale-yellow w3-container" style="height: 20%;">
   <div *ngIf="statusService.statusString.length">
     <span>{{statusService.statusString}}</span>
   </div>
@@ -11,6 +11,7 @@
   <div *ngIf="showWelcome">
     <span>Hello {{user.login}}!</span>
     <nav>
+      <span>Search: <input [(ngModel)]="globalVariablesService.searchString"></span>
       <button class="w3-button" *ngIf='user.id===1' routerLink="/users" routerLinkActive="active">users</button>
       <button class="w3-button" routerLink="/notes" routerLinkActive="active">notes</button>
       <button class="w3-button" routerLink="/setups" routerLinkActive="active">setups</button>

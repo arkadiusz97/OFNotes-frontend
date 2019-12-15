@@ -35,6 +35,16 @@ export class NotesService {
            catchError(this.handleError<Note[]>("Notes downloading failed"))
          );
   }
+  searchNotes(searchString: string): Observable<Note[]> {
+    let headers = new HttpHeaders().set("Authorization", "Basic " +
+    btoa(this.usersService.login + ":" + this.usersService.password));
+    return this.http.get<Note[]>("http://localhost:8080/searchnotes/" +
+     encodeURIComponent(searchString), {headers: headers})
+    .pipe(
+           //tap(_ => this.statusService.setStatusString("Notes downloaded")),
+           catchError(this.handleError<Note[]>("Cannot find notes with given string."))
+         );
+  }
   updateNote(note) {
     this.statusService.setStatusString("Processing...");
     const headers = new HttpHeaders({

@@ -35,6 +35,14 @@ export class UsersService {
     //tap(_ => this.statusService.setStatusString("Users downloaded")),
     catchError(this.handleError<User[]>("Users downloading failed")));
   }
+  searchUsers(searchString: string): Observable<User[]> {
+    let headers = new HttpHeaders().set("Authorization",
+    "Basic " + btoa(this.login + ":" + this.password));
+    return this.http.get<User[]>("http://localhost:8080/searchusers/" +
+    encodeURIComponent(searchString), {headers: headers}).pipe(
+    //tap(_ => this.statusService.setStatusString("Users downloaded")),
+    catchError(this.handleError<User[]>("Cannot find users with given string.")));
+  }
   getCurrentUser(login: string, password: string): Observable<HttpResponse<User>> {
     this.login = login;
     this.password = password;
