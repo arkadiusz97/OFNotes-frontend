@@ -16,4 +16,4 @@ To run this program, you need a installed [backend](https://github.com/arkadiusz
 
 # Download.
 
-Download the latest version to run on http://localhost/ofnotes/ : https://github.com/arkadiusz97/OFNotes-frontend/releases/download/2.0/ofnotes-frontend-2.0.zip
+Download the latest version to run on http://localhost/ofnotes/ with api address set to http://localhost:8080 : https://github.com/arkadiusz97/OFNotes-frontend/releases/download/2.1/ofnotes-frontend-2.1.zip
