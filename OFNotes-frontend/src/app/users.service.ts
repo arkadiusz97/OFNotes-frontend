@@ -6,6 +6,7 @@ import { HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/ht
 import { catchError, tap } from 'rxjs/operators';
 import { StatusService } from './status.service';
 import { User } from './user';
+import { GlobalVariablesService } from './global-variables.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +15,15 @@ export class UsersService {
   login: string;
   password: string;
   constructor(private http: HttpClient
-  ,private statusService: StatusService) { }
+  ,private statusService: StatusService,
+  private globalVariablesService: GlobalVariablesService) { }
   createUser(user) {
     this.statusService.setStatusString("Processing...");
     const headers = new HttpHeaders({
     "Authorization": "Basic " + btoa(this.login + ":" + this.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.post<User[]>("http://localhost:8080/user",
+    return this.http.post<User[]>(this.globalVariablesService.apiAddress + "/user",
     "login=" + encodeURIComponent(user.login) + "&password=" + encodeURIComponent(user.password),
      {headers: headers}).pipe(
      tap(_ => this.statusService.setStatusString("User created")),
@@ -31,16 +33,14 @@ export class UsersService {
   getUsers(): Observable<User[]> {
     let headers = new HttpHeaders().set("Authorization",
      "Basic " + btoa(this.login + ":" + this.password));
-    return this.http.get<User[]>("http://localhost:8080/user/0", {headers: headers}).pipe(
-    //tap(_ => this.statusService.setStatusString("Users downloaded")),
+    return this.http.get<User[]>(this.globalVariablesService.apiAddress + "/user/0", {headers: headers}).pipe(
     catchError(this.handleError<User[]>("Users downloading failed")));
   }
   searchUsers(searchString: string): Observable<User[]> {
     let headers = new HttpHeaders().set("Authorization",
     "Basic " + btoa(this.login + ":" + this.password));
-    return this.http.get<User[]>("http://localhost:8080/searchusers/" +
+    return this.http.get<User[]>(this.globalVariablesService.apiAddress + "/searchusers/" +
     encodeURIComponent(searchString), {headers: headers}).pipe(
-    //tap(_ => this.statusService.setStatusString("Users downloaded")),
     catchError(this.handleError<User[]>("Cannot find users with given string.")));
   }
   getCurrentUser(login: string, password: string): Observable<HttpResponse<User>> {
@@ -48,11 +48,8 @@ export class UsersService {
     this.password = password;
     let headers = new HttpHeaders().set("Authorization",
      "Basic " + btoa(login + ":" + password));
-    return this.http.get<User>("http://localhost:8080/user"
-    , {headers: headers, observe : 'response'});/*.pipe(
-    tap(_ => this.statusService.setStatusString("Notes downloaded")),
-    catchError(this.handleError)
-  );*/
+    return this.http.get<User>(this.globalVariablesService.apiAddress + "/user"
+    , {headers: headers, observe : 'response'});
   }
   updateUser(user) {
     this.statusService.setStatusString("Processing...");
@@ -60,7 +57,7 @@ export class UsersService {
     "Authorization": "Basic " + btoa(this.login + ":" + this.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.put<User>("http://localhost:8080/user/" + encodeURIComponent(user.id),
+    return this.http.put<User>(this.globalVariablesService.apiAddress + "/user/" + encodeURIComponent(user.id),
     "login=" + encodeURIComponent(user.login) + "&password=" +
     encodeURIComponent(user.password), {headers: headers}).pipe(
       tap(_ => this.statusService.setStatusString("User updated")),
@@ -78,7 +75,7 @@ export class UsersService {
       headers: headers,
       body: "id=" + user.id.toString()
     };
-    return this.http.delete("http://localhost:8080/user", options).pipe(
+    return this.http.delete(this.globalVariablesService.apiAddress + "/user", options).pipe(
                tap(_ => this.statusService.setStatusString("User removed")),
                catchError(this.handleError<User[]>("User remove failed"))
              );

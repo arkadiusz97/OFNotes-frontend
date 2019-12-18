@@ -7,6 +7,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Setup } from './setup';
 import { UsersService } from './users.service';
 import { StatusService } from './status.service';
+import { GlobalVariablesService } from './global-variables.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ import { StatusService } from './status.service';
 export class SetupsService {
   constructor(private http: HttpClient,
   private usersService: UsersService,
-  private statusService: StatusService) { }
+  private statusService: StatusService,
+  private globalVariablesService: GlobalVariablesService) { }
   getSetups(): Observable<Setup[]> {
     let headers = new HttpHeaders().set("Authorization", "Basic " + btoa(this.usersService.login + ":" + this.usersService.password));
-    return this.http.get<Setup[]>("http://localhost:8080/setups", {headers: headers}).pipe(
-               //tap(_ => this.statusService.setStatusString("Setup downloaded")),
+    return this.http.get<Setup[]>(this.globalVariablesService.apiAddress + "/setups", {headers: headers}).pipe(
                catchError(this.handleError<Setup[]>("Setup downloading failed"))
              );
   }
@@ -28,7 +29,7 @@ export class SetupsService {
     "Authorization": "Basic " + btoa(this.usersService.login + ":" + this.usersService.password),
     "Content-Type": "application/x-www-form-urlencoded",
     'Accept': 'application/json'});
-    return this.http.put<Setup>("http://localhost:8080/setups", encodeURIComponent(setup.name) + "=" + encodeURIComponent(setup.value)
+    return this.http.put<Setup>(this.globalVariablesService.apiAddress + "/setups", encodeURIComponent(setup.name) + "=" + encodeURIComponent(setup.value)
     , {headers: headers}).pipe(
                tap(_ => this.statusService.setStatusString("Setup updated")),
                catchError(this.handleError<Setup[]>("Setup update failed"))

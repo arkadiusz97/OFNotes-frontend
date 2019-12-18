@@ -41,6 +41,9 @@ export class SidebarUsersComponent implements OnInit {
       this.statusService.setStatusString("Empty login.");
       return;
     }
+    if(this.newUser.password == null) {
+      this.newUser.password = "";
+    }
     this.usersService.createUser(this.newUser).subscribe(_ => {
       this.getUsersAndSelectLast();
     });
