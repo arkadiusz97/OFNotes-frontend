@@ -1,6 +1,6 @@
 # OFNotes - frontend
 # Detailed description.
-OFNotes - frontend is a SPA website written in Angular 8, which consumes [API](https://github.com/arkadiusz97/OFNotes) Searching options from backend haven't implemented yet.
+OFNotes - frontend is a SPA website written in Angular 8, which consumes [API](https://github.com/arkadiusz97/OFNotes)
 Program is also using [w3.css](https://www.w3schools.com/w3css/).
 OFNotes allows register account and manage notes.
 
